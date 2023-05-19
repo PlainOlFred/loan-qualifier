@@ -1,5 +1,6 @@
 from pathlib import Path
 import fire
+import questionary
 
 from utils.fileio import load_csv
 from utils.calculators import (calculate_monthly_debt_ratio, calculate_loan_to_value_ratio)
@@ -8,7 +9,8 @@ from utils.filters.loan_to_value import filter_loan_to_value
 from utils.filters.credit_score import filter_credit_score
 from utils.filters.max_loan import filter_max_loan_size
 
-def load_bank_data(file_path):
+def load_bank_data():
+  file_path = questionary.text("Enter a file path to a rate-sheet (.csv):").ask()
   csvpath = Path(file_path)
 
   return load_csv(csvpath)
@@ -34,7 +36,7 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
 
 
 def run(credit_score, debt, income):
-  bank_data = load_bank_data('./data/daily_rate_sheet.csv')
+  bank_data = load_bank_data()
 
   # Set the applicant's information
 
