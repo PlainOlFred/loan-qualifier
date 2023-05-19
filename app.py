@@ -1,4 +1,5 @@
 from pathlib import Path
+import fire
 
 from utils.fileio import load_csv
 from utils.calculators import (calculate_monthly_debt_ratio, calculate_loan_to_value_ratio)
@@ -32,14 +33,11 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
   return bank_data_filtered
 
 
-def run():
+def run(credit_score, debt, income):
   bank_data = load_bank_data('./data/daily_rate_sheet.csv')
-  print(bank_data)
 
   # Set the applicant's information
-  credit_score = 750
-  debt = 5000
-  income = 20000
+
   loan_amount = 100000
   home_value = 210000
 
@@ -53,4 +51,4 @@ def run():
   return 0
 
 if __name__ == "__main__":
-  run()
+  fire.Fire(run)
