@@ -15,6 +15,15 @@ def load_bank_data():
 
   return load_csv(csvpath)
 
+def get_applicant_info():
+  credit_score = int(questionary.text("What's your credit score?").ask())
+  debt = float(questionary.text("What's your current amount of monthly debt?").ask())
+  income = float(questionary.text("What's your total monthly income?").ask())
+  loan_amount = float(questionary.text("What's your desired loan amount?").ask())
+  home_value = float(questionary.text("What's your home value?").ask())
+
+  return credit_score, debt, income, loan_amount, home_value
+
 def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_value):
   # Calculate the monthly debt ratio
   monthly_debt_ratio = calculate_monthly_debt_ratio(debt, income)
@@ -35,13 +44,11 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
   return bank_data_filtered
 
 
-def run(credit_score, debt, income):
+def run():
   bank_data = load_bank_data()
 
-  # Set the applicant's information
-
-  loan_amount = 100000
-  home_value = 210000
+  # Get the applicant's information
+  credit_score, debt, income, loan_amount, home_value = get_applicant_info()
 
   # Find qualifying loans
   qualifying_loans = find_qualifying_loans(
