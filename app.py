@@ -1,4 +1,5 @@
 from pathlib import Path
+import sys
 import fire
 import questionary
 
@@ -12,6 +13,9 @@ from utils.filters.max_loan import filter_max_loan_size
 def load_bank_data():
   file_path = questionary.text("Enter a file path to a rate-sheet (.csv):").ask()
   csvpath = Path(file_path)
+
+  if not csvpath.exists():
+    sys.exit(f"Can't find this path: {csvpath}")
 
   return load_csv(csvpath)
 
