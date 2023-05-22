@@ -3,7 +3,7 @@ import sys
 import fire
 import questionary
 
-from utils.fileio import load_csv
+from utils.fileio import (load_csv, save_csv)
 from utils.calculators import (calculate_monthly_debt_ratio, calculate_loan_to_value_ratio)
 from utils.filters.debt_to_income import filter_debt_to_income
 from utils.filters.loan_to_value import filter_loan_to_value
@@ -47,6 +47,19 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
 
   return bank_data_filtered
 
+def save_qualifying_loans(qualifying_loans):
+  """Saves the qualifying loans to a CSV file."""
+  if not qualifying_loans:
+    sys.exit("Sorry, there are no qualifying loans!")
+
+  saveFile = questionary.confirm("Would you like to save the qualifying loans?").ask()
+
+  if saveFile:
+    csvpath = questionary.text(
+        "Please enter a filepath for the saved data: (qualifying_loans.csv)"
+    ).ask()
+    save_csv(Path(csvpath), qualifying_loans)
+
 
 def run():
   bank_data = load_bank_data()
@@ -59,7 +72,8 @@ def run():
       bank_data, credit_score, debt, income, loan_amount, home_value
   )
 
-  print(qualifying_loans)
+  # Save qulifying loan
+  save_qualifying_loans(qualifying_loans)
   
   return 0
 
